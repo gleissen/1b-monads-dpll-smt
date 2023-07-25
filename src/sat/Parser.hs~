@@ -1,0 +1,92 @@
+module Parser
+  ( prop
+  , parse
+  ) where
+
+-- In this module, we parse propositional formulas.
+
+import Text.Parsec hiding (parse)
+import qualified Text.Parsec as Parsec
+import Prop
+
+-- The string parser we use in this file
+type Parser = Parsec String ()
+
+-- Literal declaration
+lit :: Parser (Prop String)
+lit = do
+  v <- many1 letter
+  return $ Lit v
+
+--  negation
+neg :: Parser (Prop String)
+neg = do
+  _ <- oneOf "~!-¬"
+  spaces
+  f <- expr
+  return $ Neg f
+
+-- Parenthesized expression
+paren :: Parser a -> Parser a
+paren p = between (char '(') (char ')') p
+
+--A expr is either:
+-- paren expr
+-- unary
+-- var
+expr :: Parser (Prop String)
+expr = do
+  spaces
+  t <- paren expr <|> neg <|> lit
+  spaces
+  return t
+
+
+binary :: Parser (Prop String)
+binary = do
+    spaces
+    x1 <- expr
+    s <-  choice $ map string ["&", "∧", "|", "∨", "->", "<->"] 
+    x2 <- expr
+    return $ (op s) x1 x2
+  where
+    op c = case c of 
+      "&"   -> (:&:)
+      "∧"   -> (:&:)
+      "|"   -> (:|:)
+      "∨"   -> (:|:)
+      "->"  -> (-->)
+      "<->" -> (<->)
+-- A term, in this case a conjunction
+-- term :: Parser (Prop String)
+-- term = do
+--   (t:ts) <- factor `sepBy1` (oneOf "&∧")
+--   spaces
+--   return $ foldl (:&:) t ts
+
+-- -- An expression, in this case a disjunction
+-- expr :: Parser (Prop String)
+-- expr = do
+--   (e:es) <- term `sepBy1` (oneOf "|∨")
+--   spaces
+--   return $ foldl (:|:) e es
+
+-- A term, in this case an implication
+-- term :: Parser (Prop String)
+-- term = do
+--   (t:ts) <- factor `sepBy1` ("->")
+--   spaces
+--   return $ foldl (-->) t ts
+
+-- A full propositional expression, does not
+-- accept garbage after the expression
+prop :: Parser (Prop String)
+prop = do
+  e <- binary
+  eof
+  return e
+
+parse :: String -> Prop String
+parse raw = case Parsec.parse prop "haskell" raw of
+  Right p -> p
+  Left x -> error . show $ x
