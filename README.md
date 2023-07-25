@@ -15,6 +15,8 @@ That said, in the big picture, SAT is still a bit restrictive, and if we want to
 talk about programs, we need to be able to reason about arithmetic. To achieve
 this, you will therefore extend the DPLL solver into a simple SMT solver for the
 theory of linear rational arithmetic (LRA) in the final part of the assignment.
+This theory will also form the basis of our later assignments for verifying
+actual programs! 
 
 Getting started
 ===============
