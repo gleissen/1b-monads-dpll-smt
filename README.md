@@ -76,8 +76,6 @@ Remember that you may individually run the functions via ``stack ghci``. Specifi
 there is a ``parse`` function available that allows you to easily specify propositional
 formulas in a string, e.g.
 
-.. code:: haskell
-
     ghci> cnf $ parse "x & -x | z"
 
 Which will output your implementation of the cnf transformation.
@@ -90,7 +88,7 @@ and the main computational structure of the DPLL procedure.
 Similarly, for the SMT part of the assignment you can use parsing function
 ``parseLRA`` to parse an LRA formula, e.g.
 
-.. code:: haskell
+
 
     ghci> parseLRA "x>=0 & y>=4 & (x+y<=0 | x+(-y)=0)"
 
