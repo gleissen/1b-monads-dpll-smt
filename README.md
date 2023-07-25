@@ -16,13 +16,10 @@ This assignment runs using stack and works like the last assignment.
 Just clone this repository using ``git clone ...``
 and run it using
 
-.. code:: sh
 
     $ stack test
 
 which will tell you your current grade. As before you can use 
-
-.. code:: sh
 
     $ stack ghci
 
@@ -101,7 +98,6 @@ Running the SAT solver
 ----------------------
 If you have a (semi) working product. You can run the following to run the SAT solver:
 
-.. code:: sh
 
     $ stack run
 
@@ -112,7 +108,6 @@ Grading
 
 You can see your current grade, when running 
 
-.. code:: sh
 
     $ stack test
 
